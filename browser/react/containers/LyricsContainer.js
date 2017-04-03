@@ -1,18 +1,16 @@
-import store from '../Store.js'
-import React, { Component } from 'react';
+import store from '../store.js';
 import React, { Component } from 'react';
 import axios from 'axios';
 import { hashHistory } from 'react-router';
 import Sidebar from '../components/Sidebar';
+import Lyrics from '../components/Lyrics';
 
 
-
-export default class LyricsContainer extends React.Component(){
+export default class LyricsContainer extends React.Component{
     constructor () {
         super()
-        tihs.state = store.getState();
+        this.state = store.getState();
     }
-
     componentDidMount(){
         this.unsubscribe = store.subscribe(()=>{
             const newState = store.getState()    // update this containers state when componen mounts
@@ -21,7 +19,13 @@ export default class LyricsContainer extends React.Component(){
     }
 
     componentWillUnmount(){
-        this.unsubscribe()';'
+        this.unsubscribe();
     }
 
+
+    render () {
+        return(
+             <Lyrics state={this.state} />
+        )
+    }
 }

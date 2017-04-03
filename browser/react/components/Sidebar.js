@@ -18,6 +18,13 @@ const Sidebar = (props) => {
           <Link to='/artists'>ARTISTS</Link>
         </h4>
       </section>
+
+      <section>
+          <h4 className="menu-item">
+            <Link to='/lyricsContainer'>LYRICS</Link>
+          </h4>
+      </section>
+
       <hr />
       <section>
         <h4 className="text-muted">PLAYLISTS</h4>
