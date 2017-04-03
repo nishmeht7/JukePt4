@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Lyrics = (props) => {
+
     const artistChange = e => {
         props.setArtist(e.target.value)
     }
