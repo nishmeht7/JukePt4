@@ -1,31 +1,64 @@
-import store from '../store.js';
-import React, { Component } from 'react';
-import axios from 'axios';
-import { hashHistory } from 'react-router';
-import Sidebar from '../components/Sidebar';
+import React, {Component} from 'react';
 import Lyrics from '../components/Lyrics';
+import axios from 'axios';
+
+import {setLyrics} from '../action-creators/lyrics';
+import store from '../store';
+
+export default class extends Component {
+
+  constructor() {
+
+    super();
+
+    this.state = Object.assign({
+      artistQuery: '',
+      songQuery: ''
+    }, store.getState());
+
+    this.handleArtistInput = this.handleArtistInput.bind(this);
+    this.handleSongInput = this.handleSongInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+      this.setState(store.getState());
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  handleArtistInput(artist) {
+    this.setState({ artistQuery: artist });
+  }
+
+  handleSongInput(song) {
+    this.setState({ songQuery: song });
+  }
+
+  handleSubmit(event) {
 
 
-export default class LyricsContainer extends React.Component{
-    constructor () {
-        super()
-        this.state = store.getState();
+    event.preventDefault();
+    if (this.state.artistQuery && this.state.songQuery) {
+        store.dispatch(fetchLyrics(this.state.artistQuery, this.state.songQuery));
     }
-    componentDidMount(){
-        this.unsubscribe = store.subscribe(()=>{
-            const newState = store.getState()    // update this containers state when componen mounts
-            this.setState(newState);
-        })
-    }
 
-    componentWillUnmount(){
-        this.unsubscribe();
-    }
+  }
 
+  render() {
+    return <Lyrics
+      text={this.state.text}
+      setArtist={this.handleArtistInput}
+      setSong={this.handleSongInput}
+      artistQuery={this.state.artistQuery}
+      songQuery={this.state.songQuery}
+      handleSubmit={this.handleSubmit}
+    />
+  }
 
-    render () {
-        return(
-             <Lyrics state={this.state} />
-        )
-    }
 }
+
